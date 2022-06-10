@@ -1,7 +1,7 @@
 {
-  "name": "node-starter-project",
+  "name": "reddit-twitch-streams-widget",
   "version": "1.0.0",
-  "description": "Node Starter Project with TypeScript, Eslint and Prettier.",
+  "description": "A widget for displaying the selected streams in subreddit sidebar.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Bachitter Chahal",
@@ -34,6 +34,7 @@
   "dependencies": {
     "dotenv": "^16.0.1",
     "node-fetch": "2.6.6",
-    "prettier": "^2.6.2"
+    "prettier": "^2.6.2",
+    "snoowrap": "^1.23.0"
   }
 }

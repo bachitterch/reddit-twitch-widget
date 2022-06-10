@@ -3,12 +3,6 @@ const fetch = require('node-fetch')
 
 dotenv.config()
 
-type Response = {
-  access_token: string
-  expires_in: number
-  token_type: string
-}
-
 const clientId = process.env.TWITCH_CLIENT_ID || ''
 const clientSecret = process.env.TWITCH_CLIENT_SECRET || ''
 
@@ -24,4 +18,10 @@ export const getOAuth = async () => {
   const token = result.access_token
 
   return token
+}
+
+type Response = {
+  access_token: string
+  expires_in: number
+  token_type: string
 }
