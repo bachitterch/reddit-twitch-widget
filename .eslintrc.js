@@ -16,6 +16,8 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier'],
   rules: {
     'prettier/prettier': 'warn',
-    'no-console': 'warn'
+    'no-console': 'warn',
+    'no-var-requires': 'off',
+    '@typescript-eslint/no-var-requires': 'off'
   }
 }
