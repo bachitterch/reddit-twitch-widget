@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 const fetch = require('node-fetch')
 import Streamers from '../../Streamers'
+import { Streamer } from '../types'
 import { getOAuth } from './getOAuth'
 
 dotenv.config()
@@ -11,7 +12,7 @@ const nameStrings = Streamers.map(stream => `&user_login=${stream}`).join('')
 
 const TWITCH_STREAMS_ENDPOINT = 'https://api.twitch.tv/helix/streams'
 
-const getStreams = async () => {
+export const getStreams = async () => {
   const token = await getOAuth()
   const endpoint = TWITCH_STREAMS_ENDPOINT + '?first=100' + nameStrings
 
@@ -23,7 +24,7 @@ const getStreams = async () => {
   })
   const result: Response = await response.json()
 
-  const streams = result.data.map((stream: Stream) => {
+  const streams = await result.data.map((stream: Streamer) => {
     return {
       title: stream.title,
       username: stream.user_name,
@@ -35,17 +36,6 @@ const getStreams = async () => {
   return streams
 }
 
-getStreams().then(streams => {
-  console.log(streams)
-})
-
-type Stream = {
-  title: string
-  viewer_count: number
-  user_name: string
-  game_name: string
-}
-
 interface Response {
-  data: Stream[]
+  data: Streamer[]
 }

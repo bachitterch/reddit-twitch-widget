@@ -1,1 +1,1 @@
-export default require('./utils/getStreams')
+export default require('./utils/reddit')
