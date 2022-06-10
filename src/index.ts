@@ -5,47 +5,44 @@ import { getOAuth } from './utils/getOAuth'
 dotenv.config()
 
 const clientId = process.env.TWITCH_CLIENT_ID || ''
+const streams = ['swizzmb', 'whitep4nth3r', 'moboking', 'wolfabelle', 'silent']
 
-type Response = {
-  data: Stream[]
-}
+const nameStrings = streams.map(stream => `&user_login=${stream}`).join('')
 
 type Stream = {
   title: string
   viewer_count: number
   user_name: string
-  user_login: string
   game_name: string
+}
+
+interface Response {
+  data: Stream[]
 }
 
 const TWITCH_STREAMS_ENDPOINT = 'https://api.twitch.tv/helix/streams'
 
-const getStreams = async (names: string) => {
+const getStreams = async () => {
   const token = await getOAuth()
+  const endpoint = TWITCH_STREAMS_ENDPOINT + '?first=100' + nameStrings
 
-  const url = TWITCH_STREAMS_ENDPOINT + '?first=100' + names
-
-  const response = await fetch(url, {
+  const response = await fetch(endpoint, {
     headers: {
       'Client-ID': clientId,
       Authorization: `Bearer ${token}`
     }
   })
-  const res: Response = await response.json()
-  const streams = res.data.map((stream: Stream) => {
+  const result: Response = await response.json()
+
+  const streams = result.data.map((stream: Stream) => {
     return {
       title: stream.title,
-      viewers: stream.viewer_count,
-      user_name: stream.user_name,
-      user_logins: stream.user_login,
-      game_name: stream.game_name
+      username: stream.user_name,
+      game_name: stream.game_name,
+      viewers: stream.viewer_count
     }
   })
   console.log(streams)
 }
 
-const streams = ['swizzmb', 'whitep4nth3r', 'moboking', 'wolfabelle', 'silent']
-
-const nameStreams = streams.map(stream => `&user_login=${stream}`).join('')
-
-getStreams(nameStreams)
+getStreams()

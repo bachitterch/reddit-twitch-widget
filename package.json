@@ -9,7 +9,6 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "rm -rf ./dist && tsc",
-    "prestart": "npm run build",
     "check-format": "prettier --check .",
     "check-lint": "eslint . --ext ts --ext tsx",
     "format": "prettier --write .",
