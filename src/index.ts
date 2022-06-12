@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import axios from 'axios'
+import { CronJob } from 'cron'
 import { getStreams } from './utils/twitch/getStreams'
 import { getOAuthToken, getWidgetId } from './utils/reddit'
 
@@ -35,4 +36,12 @@ const updateWidget = async () => {
   return response
 }
 
-updateWidget()
+const main = async () => {
+  const task = new CronJob('*/15 * * * * *', async () => {
+    await updateWidget()
+  })
+
+  task.start()
+}
+
+main()
