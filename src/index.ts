@@ -38,7 +38,7 @@ const updateWidget = async () => {
 
 const main = async () => {
   const task = new CronJob('*/15 * * * * *', async () => {
-    await updateWidget()
+    await updateWidget().catch(err => console.error('error', err))
   })
 
   task.start()

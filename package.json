@@ -11,6 +11,7 @@
     "build": "rm -rf ./dist && tsc",
     "check-format": "prettier --check .",
     "check-lint": "eslint . --ext ts --ext tsx",
+    "check": "npm run check-format && npm run check-lint && tsc",
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --fix",
     "start": "node dist/index.js"
@@ -18,7 +19,6 @@
   "devDependencies": {
     "@types/cron": "^2.0.0",
     "@types/node": "^17.0.41",
-    "@types/node-fetch": "2.x",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "eslint": "^8.17.0",
@@ -32,7 +32,6 @@
     "axios": "^0.27.2",
     "cron": "^2.0.0",
     "dotenv": "^16.0.1",
-    "node-fetch": "2.6.6",
     "prettier": "^2.6.2"
   }
 }
