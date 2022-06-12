@@ -1,18 +1,18 @@
 import dotenv from 'dotenv'
-import fetch from 'node-fetch'
-import { getStreams } from './twitch/getStreams'
+import axios from 'axios'
 
 dotenv.config()
 
-const subreddit = 'bachitters_playground'
+const subreddit = process.env.SUBREDDIT
 const clientId = process.env.REDDIT_CLIENT_ID || ''
 const clientSecret = process.env.REDDIT_CLIENT_SECRET
 const username = process.env.REDDIT_USERNAME
 const password = process.env.REDDIT_PASSWORD
 
-const getOAuthToken = async () => {
-  const response = await fetch(`https://www.reddit.com/api/v1/access_token`, {
+export const getOAuthToken = async () => {
+  const { data } = await axios({
     method: 'POST',
+    url: 'https://www.reddit.com/api/v1/access_token',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Client-ID': clientId,
@@ -21,30 +21,27 @@ const getOAuthToken = async () => {
       ).toString('base64')}`,
       'User-Agent': 'bachitters-playground-bot'
     },
-    body: `grant_type=password&username=${username}&password=${password}&scope=modwiki%20wikiedit%20wikiread%20structuredstyles`
+    data: `grant_type=password&username=${username}&password=${password}&scope=modwiki%20wikiedit%20wikiread%20structuredstyles%20read`
   })
 
-  const { access_token } = (await response.json()) as { access_token: string }
+  const { access_token } = data
 
   return access_token
 }
 
-const getWidgets = async () => {
+export const getWidgetId = async () => {
   const accessToken = await getOAuthToken()
 
-  const response = await fetch(
-    `https://www.reddit.com/r/${subreddit}/wiki/pages`,
-    {
-      method: 'GET',
+  const response = await axios
+    .get(`https://oauth.reddit.com/r/${subreddit}/api/widgets`, {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: `bearer ${accessToken}`,
         'User-Agent': 'bachitters-playground-bot'
       }
-    }
-  ).then(res => {
-    console.log(res)
-  })
-}
+    })
+    .then(res => {
+      return res.data.items.widget_19540u970qjc6.id
+    })
 
-getWidgets()
+  return response
+}
