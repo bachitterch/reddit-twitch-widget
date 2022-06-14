@@ -13,9 +13,15 @@ const updateWidget = async () => {
   const accessToken = await getOAuthToken()
   const streams = await getStreams()
 
-  const streamdata = streams.map(stream => {
-    return `### [${stream.username}](https://twitch.tv/${stream.username}) - ${stream.viewers}  `
-  })
+  let streamdata: string[] = []
+
+  if (streams.length === 0) {
+    streamdata.push('Everyone is offline')
+  } else {
+    streamdata = streams.map(stream => {
+      return `### [${stream.username}](https://twitch.tv/${stream.username}) - ${stream.viewers}  `
+    })
+  }
 
   const response = await axios.put(
     `https://oauth.reddit.com/r/${subreddit}/api/widget/${widgetId}`,
