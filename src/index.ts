@@ -16,10 +16,10 @@ const updateWidget = async () => {
   let streamdata: string[] = []
 
   if (streams.length === 0) {
-    streamdata.push('Everyone is offline')
+    streamdata.push('**Everyone is offline**')
   } else {
     streamdata = streams.map(stream => {
-      return `- [${stream.username}](https://twitch.tv/${stream.username}) - ${stream.viewers}  `
+      return `- [### **${stream.username}**](https://twitch.tv/${stream.username}) - ${stream.viewers}  `
     })
   }
 
