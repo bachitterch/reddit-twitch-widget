@@ -40,7 +40,7 @@ export const getWidgetId = async () => {
       }
     })
     .then(res => {
-      return res.data.items.widget_19577k6l2zoh2.id
+      return res?.data?.items?.widget_19577k6l2zoh2.id
     })
 
   return response

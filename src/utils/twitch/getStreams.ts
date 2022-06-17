@@ -29,10 +29,10 @@ export const getStreams = async () => {
 
   const streams = await data.map((stream: Streamer) => {
     return {
-      title: stream.title,
-      username: stream.user_name,
-      game_name: stream.game_name,
-      viewers: stream.viewer_count
+      title: stream?.title,
+      username: stream?.user_name,
+      game_name: stream?.game_name,
+      viewers: stream?.viewer_count
     }
   })
 
