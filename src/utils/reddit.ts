@@ -40,7 +40,9 @@ export const getWidgetId = async () => {
       }
     })
     .then(res => {
-      return res?.data?.items?.widget_19577k6l2zoh2.id
+      const widgetId: any = res.data.layout.sidebar.order[0]
+
+      return widgetId
     })
 
   return response
