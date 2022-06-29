@@ -26,20 +26,21 @@ export const getStreams = async () => {
         Authorization: `Bearer ${token}`
       }
     })
-    const { data }: Response = await response.data
+    const { data } = await response.data
 
     const streams = await data.map((stream: Streamer) => {
       return {
         title: stream?.title,
-        username: stream?.user_name,
+        user_name: stream?.user_name,
         game_name: stream?.game_name,
-        viewers: stream?.viewer_count
+        viewer_count: stream?.viewer_count
       }
     })
 
     return streams
   } catch (err) {
     console.dir(err)
+    return err
   }
 }
 

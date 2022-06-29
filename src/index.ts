@@ -3,6 +3,7 @@ import { CronJob } from 'cron'
 import dotenv from 'dotenv'
 import { getOAuthToken, getWidgetId } from './utils/reddit'
 import { getStreams } from './utils/twitch/getStreams'
+import { Streamer } from './utils/types'
 
 dotenv.config()
 
@@ -11,15 +12,15 @@ const subreddit = process.env.SUBREDDIT
 const updateWidget = async () => {
   const widgetId = await getWidgetId()
   const accessToken = await getOAuthToken()
-  const streams = await getStreams()
+  const streams: Streamer[] = await getStreams()
 
   let streamdata: string[] = []
 
   if (streams.length === 0) {
     streamdata.push('**Everyone is offline**')
   } else {
-    streamdata = streams.map(stream => {
-      const data = `- [**${stream?.username}**](https://twitch.tv/${stream?.username}) - ${stream?.viewers}  `
+    streamdata = streams.map((stream: Streamer) => {
+      const data = `- [**${stream?.user_name}**](https://twitch.tv/${stream?.user_name}) - ${stream?.viewer_count}  `
 
       return data
     })
@@ -45,6 +46,7 @@ const updateWidget = async () => {
     return response
   } catch (err) {
     console.dir(err)
+    return err
   }
 }
 

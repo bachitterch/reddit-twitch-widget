@@ -44,7 +44,7 @@ export const getWidgetId = async () => {
         }
       })
       .then(res => {
-        const widgetId: any = res.data.layout.sidebar.order[0]
+        const widgetId: Promise<any> = res.data.layout.sidebar.order[0]
 
         return widgetId
       })

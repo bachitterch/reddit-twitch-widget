@@ -20,6 +20,8 @@ export const getOAuth = async () => {
     return access_token
   } catch (err) {
     console.dir(err)
+
+    return err
   }
 }
 type Response = {
