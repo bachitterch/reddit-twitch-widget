@@ -1,5 +1,5 @@
-import dotenv from 'dotenv'
 import axios from 'axios'
+import dotenv from 'dotenv'
 
 import { Streamer } from '../types'
 import { getOAuth } from './getOAuth'
@@ -19,24 +19,28 @@ export const getStreams = async () => {
 
   const endpoint = TWITCH_STREAMS_ENDPOINT + '?first=100' + nameStrings
 
-  const response = await axios.get(endpoint, {
-    headers: {
-      'Client-ID': clientId,
-      Authorization: `Bearer ${token}`
-    }
-  })
-  const { data }: Response = await response.data
+  try {
+    const response = await axios.get(endpoint, {
+      headers: {
+        'Client-ID': clientId,
+        Authorization: `Bearer ${token}`
+      }
+    })
+    const { data }: Response = await response.data
 
-  const streams = await data.map((stream: Streamer) => {
-    return {
-      title: stream?.title,
-      username: stream?.user_name,
-      game_name: stream?.game_name,
-      viewers: stream?.viewer_count
-    }
-  })
+    const streams = await data.map((stream: Streamer) => {
+      return {
+        title: stream?.title,
+        username: stream?.user_name,
+        game_name: stream?.game_name,
+        viewers: stream?.viewer_count
+      }
+    })
 
-  return streams
+    return streams
+  } catch (err) {
+    console.dir(err)
+  }
 }
 
 interface Response {

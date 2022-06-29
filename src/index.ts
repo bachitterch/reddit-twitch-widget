@@ -1,8 +1,8 @@
-import dotenv from 'dotenv'
 import axios from 'axios'
 import { CronJob } from 'cron'
-import { getStreams } from './utils/twitch/getStreams'
+import dotenv from 'dotenv'
 import { getOAuthToken, getWidgetId } from './utils/reddit'
+import { getStreams } from './utils/twitch/getStreams'
 
 dotenv.config()
 
@@ -19,32 +19,38 @@ const updateWidget = async () => {
     streamdata.push('**Everyone is offline**')
   } else {
     streamdata = streams.map(stream => {
-      return `- [**${stream?.username}**](https://twitch.tv/${stream?.username}) - ${stream?.viewers}  `
+      const data = `- [**${stream?.username}**](https://twitch.tv/${stream?.username}) - ${stream?.viewers}  `
+
+      return data
     })
   }
 
-  const response = await axios.put(
-    `https://oauth.reddit.com/r/${subreddit}/api/widget/${widgetId}`,
-    {
-      kind: 'textarea',
-      shortName: 'Members Currently Live',
-      text: `${streamdata.join('\n')}`
-    },
-    {
-      method: 'PUT',
-      headers: {
-        Authorization: `bearer ${accessToken}`,
-        'User-Agent': 'bachitters-playground-bot'
+  try {
+    const response = await axios.put(
+      `https://oauth.reddit.com/r/${subreddit}/api/widget/${widgetId}`,
+      {
+        kind: 'textarea',
+        shortName: 'Members Currently Live',
+        text: `${streamdata.join('\n')}`
+      },
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `bearer ${accessToken}`,
+          'User-Agent': 'bachitters-playground-bot'
+        }
       }
-    }
-  )
+    )
 
-  return response
+    return response
+  } catch (err) {
+    console.dir(err)
+  }
 }
 
-const main = async () => {
-  const task = new CronJob('*/30 * * * * *', async () => {
-    await updateWidget().catch(err => console.error('error', err))
+const main = () => {
+  const task = new CronJob('*/30 * * * * *', () => {
+    updateWidget()
   })
 
   task.start()
