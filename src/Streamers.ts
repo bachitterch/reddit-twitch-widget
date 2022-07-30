@@ -12,9 +12,8 @@ const Streamers = [
   'kioshima_ff',
   'markuu',
   'sinncere',
-  'wolfabelle',
-  'leg0s',
-  'aus24'
+  'aus24',
+  'chillypanda',
 ]
 
 export default Streamers
